@@ -53,6 +53,7 @@ To configure VSCode to communicate with this server for Model Context Protocol (
 3.  **Relevant VSCode Extensions:**
     *   You may need a VSCode extension that can act as a generic HTTP/REST client to interact with the `/mcp/query` endpoint, or a specific extension designed for MCP if available. Search the VSCode Marketplace for terms like "REST client" or "MCP".
 
+
 ## Running the Server
 
 To start the MCP Demo Server / `test-api-mcp` server (which is this Flask application):
