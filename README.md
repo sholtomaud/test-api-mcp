@@ -48,6 +48,7 @@ The server will typically start on `http://127.0.0.1:5000/` or `http://0.0.0.0:5
 
 ## API Endpoints
 
+
 The server listens on `http://127.0.0.1:5000` by default.
 
 ### 1. MCP Query: Write and Read Data
@@ -59,6 +60,7 @@ The server listens on `http://127.0.0.1:5000` by default.
     -   `type` (string, required): Can be `"read"` or `"write"`.
     -   `key` (string, required): The dot-separated key path for the data (e.g., `"config.version"`, `"user.name"`).
     -   `value` (any, required for `type="write"`): The value to set for the specified key.
+
 
 #### Example: Writing a Simple Key-Value Pair
 
@@ -73,6 +75,7 @@ curl -X POST -H "Content-Type: application/json" \
     "value": "Jules"
 }' \
 http://127.0.0.1:5000/mcp/query
+
 ```
 **Response (Success):**
 ```json
@@ -82,6 +85,7 @@ http://127.0.0.1:5000/mcp/query
     "value": "Jules"
 }
 ```
+
 
 #### Example: Writing a More Complex Nested Structure
 
@@ -120,6 +124,7 @@ http://127.0.0.1:5000/mcp/query
 }
 ```
 After these write operations, the `data.json` file might look like:
+
 ```json
 {
     "user": {
@@ -130,6 +135,7 @@ After these write operations, the `data.json` file might look like:
     "system": {
         "settings": {
             "notifications": {
+
                 "email": true,
                 "sms": false,
                 "push": {
@@ -154,6 +160,7 @@ curl -X POST -H "Content-Type: application/json" \
     "key": "user.profile.name"
 }' \
 http://127.0.0.1:5000/mcp/query
+
 ```
 **Response (Success):**
 ```json
@@ -204,6 +211,7 @@ http://127.0.0.1:5000/mcp/query
 
 ### 2. Dump Data (for Debugging)
 
+
 -   **Endpoint:** `/mcp/dump`
 -   **Method:** `GET`
 -   **Description:** Retrieves the entire content of `data.json`. Useful for debugging.
@@ -212,7 +220,9 @@ http://127.0.0.1:5000/mcp/query
 ```bash
 curl http://127.0.0.1:5000/mcp/dump
 ```
+
 **Response (Example, after above writes):**
+
 ```json
 {
     "user": {
@@ -223,12 +233,14 @@ curl http://127.0.0.1:5000/mcp/dump
     "system": {
         "settings": {
             "notifications": {
+
                 "email": true,
                 "sms": false,
                 "push": {
                     "enabled": true,
                     "sound": "default"
                 }
+
             }
         }
     }
