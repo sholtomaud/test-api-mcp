@@ -48,7 +48,10 @@ The server will typically start on `http://127.0.0.1:5000/` or `http://0.0.0.0:5
 
 ## API Endpoints
 
-### 1. MCP Query
+
+The server listens on `http://127.0.0.1:5000` by default.
+
+### 1. MCP Query: Write and Read Data
 
 -   **Endpoint:** `/mcp/query`
 -   **Method:** `POST`
@@ -58,15 +61,21 @@ The server will typically start on `http://127.0.0.1:5000/` or `http://0.0.0.0:5
     -   `key` (string, required): The dot-separated key path for the data (e.g., `"config.version"`, `"user.name"`).
     -   `value` (any, required for `type="write"`): The value to set for the specified key.
 
-#### Example: Writing Data
+
+#### Example: Writing a Simple Key-Value Pair
+
+This command writes the name "Jules" to `user.profile.name`.
 
 **Request:**
 ```bash
-curl -X POST -H "Content-Type: application/json" -d '{
+curl -X POST -H "Content-Type: application/json" \
+-d '{
     "type": "write",
     "key": "user.profile.name",
     "value": "Jules"
-}' http://127.0.0.1:5000/mcp/query
+}' \
+http://127.0.0.1:5000/mcp/query
+
 ```
 **Response (Success):**
 ```json
@@ -77,18 +86,45 @@ curl -X POST -H "Content-Type: application/json" -d '{
 }
 ```
 
-#### Example: Writing Nested Data
+
+#### Example: Writing a More Complex Nested Structure
+
+This command writes notification settings under `system.settings.notifications`.
 
 **Request:**
 ```bash
-curl -X POST -H "Content-Type: application/json" -d '{
+curl -X POST -H "Content-Type: application/json" \
+-d '{
     "type": "write",
-    "key": "system.settings.notifications.email",
-    "value": true
-}' http://127.0.0.1:5000/mcp/query
+    "key": "system.settings.notifications",
+    "value": {
+        "email": true,
+        "sms": false,
+        "push": {
+            "enabled": true,
+            "sound": "default"
+        }
+    }
+}' \
+http://127.0.0.1:5000/mcp/query
 ```
+**Response (Success):**
+```json
+{
+    "message": "Key 'system.settings.notifications' successfully updated.",
+    "key": "system.settings.notifications",
+    "value": {
+        "email": true,
+        "sms": false,
+        "push": {
+            "enabled": true,
+            "sound": "default"
+        }
+    }
+}
+```
+After these write operations, the `data.json` file might look like:
 
-After this, `data.json` might look like:
 ```json
 {
     "user": {
@@ -99,21 +135,32 @@ After this, `data.json` might look like:
     "system": {
         "settings": {
             "notifications": {
-                "email": true
+
+                "email": true,
+                "sms": false,
+                "push": {
+                    "enabled": true,
+                    "sound": "default"
+                }
             }
         }
     }
 }
 ```
 
-#### Example: Reading Data
+#### Example: Reading Data (Simple Key)
+
+This command reads the value of `user.profile.name`.
 
 **Request:**
 ```bash
-curl -X POST -H "Content-Type: application/json" -d '{
+curl -X POST -H "Content-Type: application/json" \
+-d '{
     "type": "read",
     "key": "user.profile.name"
-}' http://127.0.0.1:5000/mcp/query
+}' \
+http://127.0.0.1:5000/mcp/query
+
 ```
 **Response (Success):**
 ```json
@@ -123,6 +170,38 @@ curl -X POST -H "Content-Type: application/json" -d '{
 }
 ```
 
+#### Example: Reading Data (Nested Key)
+
+This command reads the value of `system.settings.notifications.push.sound`.
+
+**Request:**
+```bash
+curl -X POST -H "Content-Type: application/json" \
+-d '{
+    "type": "read",
+    "key": "system.settings.notifications.push.sound"
+}' \
+http://127.0.0.1:5000/mcp/query
+```
+**Response (Success):**
+```json
+{
+    "key": "system.settings.notifications.push.sound",
+    "value": "default"
+}
+```
+
+#### Example: Reading a Non-Existent Key
+
+**Request:**
+```bash
+curl -X POST -H "Content-Type: application/json" \
+-d '{
+    "type": "read",
+    "key": "user.profile.nonexistent_key"
+}' \
+http://127.0.0.1:5000/mcp/query
+```
 **Response (Key Not Found):**
 ```json
 {
@@ -130,7 +209,8 @@ curl -X POST -H "Content-Type: application/json" -d '{
 }
 ```
 
-### 2. Dump Data
+### 2. Dump Data (for Debugging)
+
 
 -   **Endpoint:** `/mcp/dump`
 -   **Method:** `GET`
@@ -140,7 +220,9 @@ curl -X POST -H "Content-Type: application/json" -d '{
 ```bash
 curl http://127.0.0.1:5000/mcp/dump
 ```
-**Response (Example):**
+
+**Response (Example, after above writes):**
+
 ```json
 {
     "user": {
@@ -151,7 +233,14 @@ curl http://127.0.0.1:5000/mcp/dump
     "system": {
         "settings": {
             "notifications": {
-                "email": true
+
+                "email": true,
+                "sms": false,
+                "push": {
+                    "enabled": true,
+                    "sound": "default"
+                }
+
             }
         }
     }
