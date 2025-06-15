@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 import json
 import os
+from core_modeling_engine.base_component import ModelingComponent
 
 app = Flask(__name__)
 DATA_FILE = "data.json"
@@ -100,6 +101,18 @@ def mcp_query():
 def mcp_dump():
     all_data = read_data()
     return jsonify(all_data), 200
+
+@app.route('/test_modeling_component', methods=['GET'])
+def test_modeling_component_route():
+    try:
+        component = ModelingComponent()
+        component.process(data="test_data") # This should raise NotImplementedError
+        # If it doesn't raise, it's an unexpected behavior for the base class
+        return jsonify({"error": "Base ModelingComponent did not raise NotImplementedError as expected."}), 500
+    except NotImplementedError:
+        return jsonify({"message": "Successfully tested ModelingComponent: process() raised NotImplementedError as expected."}), 200
+    except Exception as e:
+        return jsonify({"error": "An unexpected error occurred during the test.", "details": str(e)}), 500
 
 if __name__ == '__main__':
     # Ensure data.json exists with an empty object {} if it's not there or empty
