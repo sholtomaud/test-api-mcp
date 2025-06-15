@@ -13,7 +13,9 @@ This project is a simple Python Flask server that demonstrates reading and writi
 
 ## Setup and Installation
 
-1.  **Clone the repository (if you haven't already):**
+Follow these steps to set up and run the MCP Demo Server (which functions as a test-api-mcp server):
+
+1.  **Clone this repository (if you haven't already):**
     ```bash
     # git clone <repository-url>
     # cd <repository-directory>
@@ -30,47 +32,31 @@ This project is a simple Python Flask server that demonstrates reading and writi
     pip install -r requirements.txt
     ```
 
-### Download and Install `test-api-mcp` Server
-
-1.  **Download or Clone the `test-api-mcp` server:**
-    *   Instructions to download/clone the server (e.g., `git clone <test-api-mcp-repository-url>`).
-    *   Navigate into the server's directory: `cd <test-api-mcp-directory>`
-2.  **Install server dependencies:**
-    *   Provide commands for installing dependencies (e.g., `npm install`, `pip install -r requirements.txt`).
-    *   Mention any prerequisites if known.
-3.  **Run the `test-api-mcp` server:**
-    *   Provide the command to start the server (e.g., `npm start`, `python server.py`).
-    *   Note the default port it runs on if specified in its documentation.
-
-*(Note: Please replace the placeholder instructions above with specific details for the `test-api-mcp` server.)*
-
 ### VSCode MCP Configuration
 
-To configure VSCode to communicate with the `test-api-mcp` server for Model Context Protocol (MCP) development:
+To configure VSCode to communicate with this server for Model Context Protocol (MCP) development:
 
 1.  **Identify the MCP Server Endpoint:**
-    *   The `test-api-mcp` server, once running, should expose an endpoint for MCP queries. This is often `/mcp/query`.
-    *   For this current project (MCP Demo Server), the equivalent endpoint is `http://127.0.0.1:5000/mcp/query` (or `http://0.0.0.0:5000/mcp/query`). You will need to find the corresponding URL for your `test-api-mcp` server.
+    *   This server (`MCP Demo Server`) exposes its MCP endpoint at `/mcp/query`.
+    *   When running locally with default Flask settings, this will typically be `http://127.0.0.1:5000/mcp/query` or `http://0.0.0.0:5000/mcp/query`.
 
 2.  **VSCode Settings (Example):**
-    *   If you are using a VSCode extension for MCP, it might require you to configure the server endpoint in your VSCode settings (`settings.json`).
-    *   For example, you might add something like this (the exact setting depends on the extension):
+    *   If you are using a VSCode extension that supports MCP, it might require you to configure the server endpoint in your VSCode `settings.json` file (usually found in your project's `.vscode/settings.json` or your global user settings).
+    *   For example, you might add the following setting, replacing `"mcp.client.defaultEndpoint"` with the actual setting required by your chosen extension:
         ```json
         {
-            "mcp.server.endpoint": "http://<test-api-mcp-server-address>:<port>/mcp/query"
+            "mcp.client.defaultEndpoint": "http://127.0.0.1:5000/mcp/query"
         }
         ```
-    *   Replace `http://<test-api-mcp-server-address>:<port>/mcp/query` with the actual endpoint of your `test-api-mcp` server.
+    *   Ensure the server is running (`python app.py` or `flask run`) when your VSCode extension attempts to connect.
 
 3.  **Relevant VSCode Extensions:**
-    *   Consider searching the VSCode Marketplace for extensions that support MCP or provide a generic REST client interface if a specific MCP extension is not available.
-    *   *(Placeholder: List any known/recommended VSCode extensions for MCP development here.)*
+    *   You may need a VSCode extension that can act as a generic HTTP/REST client to interact with the `/mcp/query` endpoint, or a specific extension designed for MCP if available. Search the VSCode Marketplace for terms like "REST client" or "MCP".
 
-*(Note: The specifics of VSCode configuration can vary based on the `test-api-mcp` server's implementation and any VSCode extensions you choose to use.)*
 
 ## Running the Server
 
-To start the Flask development server:
+To start the MCP Demo Server / `test-api-mcp` server (which is this Flask application):
 
 ```bash
 python app.py
