@@ -291,3 +291,13 @@ curl http://127.0.0.1:5000/mcp/dump
 -   Input validation for key names and values.
 -   Support for other MCP operations (e.g., delete, list).
 -   More comprehensive unit tests.
+
+## Core Modeling Engine
+
+This project includes a core modeling engine designed for flexible and extensible data processing and simulations. The engine is built around the concept of `ModelingComponent` objects, which can be chained together to create complex modeling pipelines.
+
+### Structure
+
+-   `core_modeling_engine/`: Directory containing all modules related to the core modeling engine.
+    -   `base_component.py`: Defines the `ModelingComponent` base class, which provides a common interface for all modeling components.
+-   `tests/core_modeling_engine/`: Contains unit tests for the core modeling engine components.
